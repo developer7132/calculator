@@ -1,0 +1,38 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="title">Mac Calculator</h1>
+    <p class="subtitle">Change Sass var $calc-size to adjust overall size
+    <div class="calculator">
+      <div class="display">
+        <div id="current_value" class="current-value">
+        </div>
+        <div id="cache" class="cache">
+        </div>
+      </div>
+      <div class="row">
+        {% for keyboard in keyboard_list %}
+        <button
+          id="{{keyboard.value}}"
+          class="button calc {{keyboard.type}} {% if keyboard.value == "0" %}zero{% endif %}"
+        >
+          {{keyboard.display}}
+        </button>
+          {% if keyboard.type == "operator" %}
+            </div>
+            {% if not keyboard.value == "equal" %}
+            <div class="row">
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+    </div>
+  </div>
+
+  <script>
+    var csrftoken = "{{ csrf_token }}";
+  </script>
+    
+
+{% endblock %}

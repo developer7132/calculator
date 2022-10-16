@@ -1,0 +1,22 @@
+{% load static %}
+
+<header>
+    <ul class="navbar">
+        <li class="navbar-item">
+            <a 
+                class="nav-item {% if page == "home" %}current{% endif %}"
+                href="{% url "home" %}"
+            >
+                Home
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a 
+                class="nav-item {% if page == "calculator" %}current{% endif %}"
+                href="{% url "calculator" %}"
+            >
+                Calculator
+            </a>
+        </li>
+      </ul>
+</header>

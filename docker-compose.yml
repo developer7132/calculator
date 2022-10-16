@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  app:
+    restart: always
+    build: ./calculator
+    container_name: django-backend
+    volumes:
+      - ./calculator:/code
+      - static_volume:/code/staticfiles
+      - media_volume:/code/mediafiles
+    env_file:
+      - ./calculator/.env
+    command: 
+      "gunicorn --workers=3 --bind=0.0.0.0:8000 calculator.wsgi:application --reload"
+    depends_on:
+      - db
+
+  
+  db:
+    restart: unless-stopped
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./calculator/initidb.sh:/docker-entrypoint-initidb.d/initidb.sh
+      - ./calculator/postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./calculator/.env
+  
+  nginx:
+    build: ./nginx
+    container_name: ngx
+    ports:
+      - "80:80"
+    volumes:
+      - static_volume:/code/staticfiles
+      - media_volume:/code/mediafiles
+    depends_on:
+      - app
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
